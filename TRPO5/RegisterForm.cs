@@ -75,7 +75,7 @@ namespace TRPO5
 
                 if (CourseComboBox.Text == "Выберите курс")
                 {
-                    MessageBox.Show("Укажите курс!");
+                    MessageBox.Show("Укажите корректный курс! ( от 1 до 4 )");
                     return;
                 }
 
@@ -88,7 +88,7 @@ namespace TRPO5
                 if (checkUser())
                 {
 
-                    MessageBox.Show("Данный пользователь уже зарегистрирован!");
+                    MessageBox.Show("Данный пользователь уже был зарегистрирован!");
                     return;
                 }
 
@@ -96,7 +96,7 @@ namespace TRPO5
             catch
             {
                 string s = null;
-                throw new ArgumentNullException(paramName: nameof(s), message: "Ошибка данных при регистрации (неизвестная ошибка )!");
+                throw new ArgumentNullException(paramName: nameof(s), message: "Ошибка данных при регистрации в базе данных (неизвестная ошибка )!");
             }
             DataBase dataBase = new DataBase();
             // вставка "формирование sql запроса "
