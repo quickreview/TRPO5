@@ -75,7 +75,7 @@ namespace TRPO5
 
                 if (CourseComboBox.Text == "Выберите курс")
                 {
-                    MessageBox.Show("Укажите курс!");
+                    MessageBox.Show("Укажите корректный курс! ( от 1 до 4 )");
                     return;
                 }
 
@@ -88,7 +88,7 @@ namespace TRPO5
                 if (checkUser())
                 {
 
-                    MessageBox.Show("Данный пользователь уже зарегистрирован!");
+                    MessageBox.Show("Данный пользователь уже был зарегистрирован!");
                     return;
                 }
 
@@ -96,7 +96,7 @@ namespace TRPO5
             catch
             {
                 string s = null;
-                throw new ArgumentNullException(paramName: nameof(s), message: "Ошибка данных при регистрации (неизвестная ошибка )!");
+                throw new ArgumentNullException(paramName: nameof(s), message: "Ошибка данных при регистрации в базе данных (неизвестная ошибка )!");
             }
             DataBase dataBase = new DataBase();
             // вставка "формирование sql запроса "
@@ -172,7 +172,7 @@ namespace TRPO5
                 InstituteComboBox.Items.Add("Институт пищевой и перерабатывающей промышленности");
                 InstituteComboBox.Items.Add("Институт экономики , управления и бизнеса");
                 InstituteComboBox.Items.Add("Институт строительства и транспортной инфраструктуры");
-                InstituteComboBox.Items.Add("Институт механики , робототехники , инженерии транспортных и технических систем");
+                //InstituteComboBox.Items.Add("Институт механики , робототехники");
             }
             numberInst = false;
 
@@ -199,7 +199,7 @@ namespace TRPO5
             if (InstituteComboBox.Text == "Институт пищевой и перерабатывающей промышленности") AddComboInstPisha();
             if (InstituteComboBox.Text == "Институт экономики , управления и бизнеса") AddComboInstBiznes();
 
-            if (InstituteComboBox.Text == "Институт механики , робототехники , инженерии транспортных и технических систем") AddComboInstRobot();
+           // if (InstituteComboBox.Text == "Институт механики , робототехники") AddComboInstRobot();
 
 
             numberCourse = false;
