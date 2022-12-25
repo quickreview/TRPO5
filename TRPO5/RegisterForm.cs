@@ -212,18 +212,6 @@ namespace TRPO5
 
                 GroupComboBox.Items.Add("22-КБ-ПР1");
                 GroupComboBox.Items.Add("22-КБ-ПР2");
-                GroupComboBox.Items.Add("22-КБ-ПР3");
-                GroupComboBox.Items.Add("22-КБ-ПР4");
-                GroupComboBox.Items.Add("22-КБ-ИБ1");
-                GroupComboBox.Items.Add("22-КБ-ИБ2");
-                GroupComboBox.Items.Add("22-КБ-ИБ3");
-                GroupComboBox.Items.Add("22-КБ-ПИ1");
-                GroupComboBox.Items.Add("22-КБ-ПИ2");
-                GroupComboBox.Items.Add("22-КБ-ПИ3");
-                GroupComboBox.Items.Add("22-КБ-УС1");
-                GroupComboBox.Items.Add("22-КБ-УС2");
-                GroupComboBox.Items.Add("22-КБ-УС3");
-                GroupComboBox.Items.Add("22-КМ-ПИ1");
                 GroupComboBox.Items.Add("22-КМ-ИВ2");
                 GroupComboBox.Items.Add("22-КМ-ПР1");
 
@@ -235,15 +223,8 @@ namespace TRPO5
                 GroupComboBox.Items.Add("21-КБ-ПР2");
                 GroupComboBox.Items.Add("21-КБ-ПР3");
                 GroupComboBox.Items.Add("21-КБ-ИБ1");
-                GroupComboBox.Items.Add("21-КБ-ИБ2");
-                GroupComboBox.Items.Add("21-КБ-ИБ3");
-                GroupComboBox.Items.Add("21-КБ-ПИ1");
-                GroupComboBox.Items.Add("21-КБ-ПИ2");
-                GroupComboBox.Items.Add("21-КБ-ПИ3");
-                GroupComboBox.Items.Add("21-КБ-УС1");
-                GroupComboBox.Items.Add("21-КМ-ПИ1");
-                GroupComboBox.Items.Add("21-КМ-ИВ2");
-                GroupComboBox.Items.Add("21-КМ-ПР1");
+               
+                
 
 
             }
@@ -618,6 +599,21 @@ namespace TRPO5
            
 
 
+        }
+
+        private void RegisterForm_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void registerLabel_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            Form1 form1 = new Form1();
+            form1.Show();
+
+            //RegisterForm registerForm = new RegisterForm();
+            //registerForm.Show();
         }
     }
 }

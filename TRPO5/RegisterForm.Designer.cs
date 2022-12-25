@@ -33,15 +33,16 @@
             this.LoginTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
+            this.label6 = new System.Windows.Forms.Label();
+            this.GroupComboBox = new System.Windows.Forms.ComboBox();
+            this.CourseComboBox = new System.Windows.Forms.ComboBox();
+            this.InstituteComboBox = new System.Windows.Forms.ComboBox();
             this.pictureBox5 = new System.Windows.Forms.PictureBox();
             this.pictureBox4 = new System.Windows.Forms.PictureBox();
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.GroupComboBox = new System.Windows.Forms.ComboBox();
-            this.CourseComboBox = new System.Windows.Forms.ComboBox();
-            this.InstituteComboBox = new System.Windows.Forms.ComboBox();
+            this.registerLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -105,6 +106,48 @@
             this.label2.TabIndex = 12;
             this.label2.Text = "Login";
             // 
+            // label6
+            // 
+            this.label6.AutoSize = true;
+            this.label6.Location = new System.Drawing.Point(118, 241);
+            this.label6.Name = "label6";
+            this.label6.Size = new System.Drawing.Size(53, 13);
+            this.label6.TabIndex = 22;
+            this.label6.Text = "Password";
+            // 
+            // GroupComboBox
+            // 
+            this.GroupComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.GroupComboBox.FormattingEnabled = true;
+            this.GroupComboBox.Location = new System.Drawing.Point(594, 304);
+            this.GroupComboBox.Name = "GroupComboBox";
+            this.GroupComboBox.Size = new System.Drawing.Size(483, 24);
+            this.GroupComboBox.TabIndex = 23;
+            this.GroupComboBox.Text = "Выберите группу";
+            this.GroupComboBox.SelectedIndexChanged += new System.EventHandler(this.GroupComboBox_SelectedIndexChanged);
+            // 
+            // CourseComboBox
+            // 
+            this.CourseComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.CourseComboBox.FormattingEnabled = true;
+            this.CourseComboBox.Location = new System.Drawing.Point(594, 241);
+            this.CourseComboBox.Name = "CourseComboBox";
+            this.CourseComboBox.Size = new System.Drawing.Size(483, 24);
+            this.CourseComboBox.TabIndex = 24;
+            this.CourseComboBox.Text = "Выберите курс";
+            this.CourseComboBox.SelectedIndexChanged += new System.EventHandler(this.CourseComboBox_SelectedIndexChanged);
+            // 
+            // InstituteComboBox
+            // 
+            this.InstituteComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
+            this.InstituteComboBox.FormattingEnabled = true;
+            this.InstituteComboBox.Location = new System.Drawing.Point(594, 174);
+            this.InstituteComboBox.Name = "InstituteComboBox";
+            this.InstituteComboBox.Size = new System.Drawing.Size(483, 24);
+            this.InstituteComboBox.TabIndex = 25;
+            this.InstituteComboBox.Text = "Выберите институт";
+            this.InstituteComboBox.SelectedIndexChanged += new System.EventHandler(this.InstituteComboBox_SelectedIndexChanged);
+            // 
             // pictureBox5
             // 
             this.pictureBox5.Image = global::TRPO5.Properties.Resources.group;
@@ -159,47 +202,15 @@
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
-            // label6
+            // registerLabel
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(118, 241);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 13);
-            this.label6.TabIndex = 22;
-            this.label6.Text = "Password";
-            // 
-            // GroupComboBox
-            // 
-            this.GroupComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.GroupComboBox.FormattingEnabled = true;
-            this.GroupComboBox.Location = new System.Drawing.Point(594, 304);
-            this.GroupComboBox.Name = "GroupComboBox";
-            this.GroupComboBox.Size = new System.Drawing.Size(483, 24);
-            this.GroupComboBox.TabIndex = 23;
-            this.GroupComboBox.Text = "Выберите группу";
-            this.GroupComboBox.SelectedIndexChanged += new System.EventHandler(this.GroupComboBox_SelectedIndexChanged);
-            // 
-            // CourseComboBox
-            // 
-            this.CourseComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.CourseComboBox.FormattingEnabled = true;
-            this.CourseComboBox.Location = new System.Drawing.Point(594, 241);
-            this.CourseComboBox.Name = "CourseComboBox";
-            this.CourseComboBox.Size = new System.Drawing.Size(483, 24);
-            this.CourseComboBox.TabIndex = 24;
-            this.CourseComboBox.Text = "Выберите курс";
-            this.CourseComboBox.SelectedIndexChanged += new System.EventHandler(this.CourseComboBox_SelectedIndexChanged);
-            // 
-            // InstituteComboBox
-            // 
-            this.InstituteComboBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
-            this.InstituteComboBox.FormattingEnabled = true;
-            this.InstituteComboBox.Location = new System.Drawing.Point(594, 174);
-            this.InstituteComboBox.Name = "InstituteComboBox";
-            this.InstituteComboBox.Size = new System.Drawing.Size(483, 24);
-            this.InstituteComboBox.TabIndex = 25;
-            this.InstituteComboBox.Text = "Выберите институт";
-            this.InstituteComboBox.SelectedIndexChanged += new System.EventHandler(this.InstituteComboBox_SelectedIndexChanged);
+            this.registerLabel.AutoSize = true;
+            this.registerLabel.Location = new System.Drawing.Point(987, 513);
+            this.registerLabel.Name = "registerLabel";
+            this.registerLabel.Size = new System.Drawing.Size(90, 13);
+            this.registerLabel.TabIndex = 26;
+            this.registerLabel.Text = "Авторизоваться";
+            this.registerLabel.Click += new System.EventHandler(this.registerLabel_Click);
             // 
             // RegisterForm
             // 
@@ -207,6 +218,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.ActiveBorder;
             this.ClientSize = new System.Drawing.Size(1089, 549);
+            this.Controls.Add(this.registerLabel);
             this.Controls.Add(this.InstituteComboBox);
             this.Controls.Add(this.CourseComboBox);
             this.Controls.Add(this.GroupComboBox);
@@ -223,6 +235,7 @@
             this.Controls.Add(this.label1);
             this.Name = "RegisterForm";
             this.Text = "RegisterForm";
+            this.Load += new System.EventHandler(this.RegisterForm_Load);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox5)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
@@ -249,5 +262,6 @@
         private System.Windows.Forms.ComboBox GroupComboBox;
         private System.Windows.Forms.ComboBox CourseComboBox;
         private System.Windows.Forms.ComboBox InstituteComboBox;
+        private System.Windows.Forms.Label registerLabel;
     }
 }

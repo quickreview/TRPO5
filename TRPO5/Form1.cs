@@ -61,6 +61,9 @@ namespace TRPO5
         {
 
             String login = LoginTextBox.Text;
+
+
+
             String password = PasswordTextBox.Text;
 
 
@@ -101,9 +104,24 @@ namespace TRPO5
 
             if (table.Rows.Count > 0)
             {
-                MessageBox.Show("Успешная авторизация !");
+              
+
+                this.Hide();
+
+                MainForm mainForm = new MainForm(login);
+                mainForm.Show();
+
+
+
             }
             else MessageBox.Show("Пользователь не найден !");
+        }
+
+        private void registerLabel_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            RegisterForm registerForm = new RegisterForm();
+            registerForm.Show();
         }
     }
 }

@@ -22,3 +22,4 @@ E:\Файлы VS\TRPO5\TRPO5\obj\Debug\TRPO5.csproj.CopyComplete
 E:\Файлы VS\TRPO5\TRPO5\obj\Debug\TRPO5.exe
 E:\Файлы VS\TRPO5\TRPO5\obj\Debug\TRPO5.pdb
 E:\Файлы VS\TRPO5\TRPO5\obj\Debug\TRPO5.RegisterForm.resources
+E:\Файлы VS\TRPO5\TRPO5\obj\Debug\TRPO5.MainForm.resources
