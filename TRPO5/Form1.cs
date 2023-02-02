@@ -108,8 +108,8 @@ namespace TRPO5
 
                 this.Hide();
 
-                MainForm mainForm = new MainForm(login);
-                mainForm.Show();
+                //MainForm mainForm = new MainForm(login);
+                //mainForm.Show();
 
 
 
