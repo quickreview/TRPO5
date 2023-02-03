@@ -240,7 +240,7 @@ namespace TRPO5
                 //MessageBox.Show("зашел");
                 if (dataGridView1[3 , i].Value.ToString() == discipline && 
                     Convert.ToDouble(dataGridView1[4, i].Value.ToString()) > sredniBal) count++;
-                MessageBox.Show(dataGridView1[4, i].Value.ToString() + " " + sredniBal + " count " + count.ToString() );
+                //MessageBox.Show(dataGridView1[4, i].Value.ToString() + " " + sredniBal + " count " + count.ToString() );
                
 
             }
@@ -294,6 +294,21 @@ namespace TRPO5
             }
 
 
+        }
+
+        private void label16_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label19_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            //Form1 form1 = new Form1();
+            //form1.Show();
+
+            RegisterForm registerForm = new RegisterForm();
+            registerForm.Show();
         }
     }
 }

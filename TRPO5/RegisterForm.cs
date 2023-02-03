@@ -19,14 +19,97 @@ namespace TRPO5
         public RegisterForm()
         {
             InitializeComponent();
-            InstituteComboBox_SelectedIndexChanged(this, null);
-            CourseComboBox_SelectedIndexChanged(this, null);
 
-           
+            DataTable table = new DataTable();
+
+            table.Columns.Add("Фамилия", typeof(string));
+            table.Columns.Add("Группа", typeof(string));
+            table.Columns.Add("Выбранный предмет", typeof(string));
+            table.Columns.Add("Средний бал успеваемости", typeof(double));
+
+            //table.Columns.Add("Удаление", typeof(double));
+
+            string connStr2 = "server=localhost;port=3306;username=root;password=root;database=учетдисциплин";
+
+            MySqlConnection conn2 = new MySqlConnection(connStr2);
+
+
+            conn2.Open();
+
+            string sql2 = "SELECT Surname , groupStudent ,selectDiscipline, averageScore FROM users";
+            MySqlCommand command2 = new MySqlCommand(sql2, conn2);
+
+
+            //MySqlDataReader mySqlDataReader = command2.ExecuteReader();
+
+
+            int os = 0; //Операционные системы
+            int inz = 0; //Иностранный язык
+            int it = 0; //Информационные технологии
+
+            int ma = 0; //Математический анализ
+            int asd = 0; //Алгоритмы и структуры данных
+
+
+
+            using (MySqlDataReader reader = command2.ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    //MessageBox.Show(String.Format("{0}", reader[0]));
+                    //MessageBox.Show(String.Format("{0}", reader[1]));
+
+                    //     Student student = new Student(reader[0], reader[1], reader[2], reader[3]);
+
+                    if (String.Format("{0}", reader[2]) == "Операционные системы") os++;
+                    if (String.Format("{0}", reader[2]) == "Иностранный язык") inz++;
+                    if (String.Format("{0}", reader[2]) == "Информационные технологии") it++;
+                    if (String.Format("{0}", reader[2]) == "Математический анализ") ma++;
+                    if (String.Format("{0}", reader[2]) == "Алгоритмы и структуры данных") asd++;
+
+                    table.Rows.Add(reader[0], reader[1], reader[2], reader[3]);
+
+                }
+                reader.Close();
+
+                //label10.Text = it.ToString(); // ИТ
+                //label11.Text = os.ToString(); // ОС
+                //label12.Text = inz.ToString(); // ин яз
+                //label13.Text = asd.ToString(); // асд
+                //label14.Text = ma.ToString(); // матан
+
+            }
+            DataGridViewButtonColumn uninstallButtonColumn = new DataGridViewButtonColumn();
+            uninstallButtonColumn.Name = "Удалить";
+            //uninstallButtonColumn.Text = "Удалить";
+            int columnIndex = 4;
+            dataGridView1.DataSource = table;
+            dataGridView1.Columns.Add(uninstallButtonColumn);
+
+            dataGridView1.DataSource = table;
+
+
+            dataGridView1.CellClick += dataGridViewSoftware_CellClick;
+
+            comboBox1.Items.Add("Операционные системы");
+            comboBox1.Items.Add("Иностранный язык");
+            comboBox1.Items.Add("Информационные технологии");
+            comboBox1.Items.Add("Математический анализ");
+            comboBox1.Items.Add("Алгоритмы и структуры данных");
         }
 
         private void label1_Click(object sender, EventArgs e)
         {
+
+        }
+        private void dataGridViewSoftware_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dataGridView1.Columns["Удалить"].Index)
+            {
+                dataGridView1.Rows.Remove(dataGridView1.CurrentRow);
+
+            }
+
 
         }
 
@@ -53,547 +136,9 @@ namespace TRPO5
         private void buttonLogins_Click(object sender, EventArgs e)
         {
 
-            try
-            {
-                if (LoginTextBox.Text == "")
-                {
-                    MessageBox.Show("Укажите корректный логин!");
-                    return;
-                }
-
-                if (PasswordTextBox.Text == "")
-                {
-                    MessageBox.Show("Введите пароль!");
-                    return;
-                }
-
-                if (InstituteComboBox.Text == "Выберите институт")
-                {
-                    MessageBox.Show("Выберите институт!");
-                    return;
-                }
-
-                if (CourseComboBox.Text == "Выберите курс")
-                {
-                    MessageBox.Show("Укажите корректный курс! ( от 1 до 4 )");
-                    return;
-                }
-
-                if (GroupComboBox.Text == "Выберите группу")
-                {
-                    MessageBox.Show("Укажите группу!");
-                    return;
-                }
-
-                if (checkUser())
-                {
-
-                    MessageBox.Show("Данный пользователь уже был зарегистрирован!");
-                    return;
-                }
-
-            }
-            catch
-            {
-                string s = null;
-                throw new ArgumentNullException(paramName: nameof(s), message: "Ошибка данных при регистрации в базе данных (неизвестная ошибка )!");
-            }
-            DataBase dataBase = new DataBase();
-            // вставка "формирование sql запроса "
-            MySqlCommand command = new MySqlCommand("INSERT INTO `users` (`id`, `login`, `password`, `Institute`," +
-                " `courseStudent`, `groupStudent`) VALUES (NULL, @login, @password, @Institute, @Course, @Group);" , dataBase.GetConnection());
-
-            command.Parameters.Add("@login" , MySqlDbType.VarChar).Value = LoginTextBox.Text;
-            command.Parameters.Add("@password", MySqlDbType.VarChar).Value = PasswordTextBox.Text;
-            command.Parameters.Add("@Institute", MySqlDbType.VarChar).Value = InstituteComboBox.Text;
-            command.Parameters.Add("@Course", MySqlDbType.Int32).Value = CourseComboBox.Text;
-            command.Parameters.Add("@Group", MySqlDbType.VarChar).Value = GroupComboBox.Text;
-
-            dataBase.openConnection();
-
-            if (command.ExecuteNonQuery() == 1 )
-            {
-                MessageBox.Show("Ваш аккаунт зарегистрирован !");
-            }
-            else MessageBox.Show("Аккаунт не был создан !");
-
-            dataBase.closeConnection();
         }
 
-        public Boolean checkUser ()
-        {
-
-            DataBase dataBase = new DataBase();
-
-            DataTable table = new DataTable();
-
-            MySqlDataAdapter adapter = new MySqlDataAdapter();
-
-            MySqlCommand command = new MySqlCommand("SELECT * FROM `users` WHERE " +
-
-                "`login` = @admin",
-
-           
-                dataBase.GetConnection());
-
-
-
-
-
-            command.Parameters.Add("@admin", MySqlDbType.VarChar).Value = LoginTextBox.Text; // переназначение заглушек 
-
-            
-
-            adapter.SelectCommand = command;
-
-
-
-            adapter.Fill(table); // данные поместили в таблицу 
-
-
-
-
-            if (table.Rows.Count > 0)
-            {
-               
-                return true;
-            }
-            else return false;
-        }
-
-        private void InstituteComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-            if (numberInst)
-            {
-                InstituteComboBox.Items.Add("Институт компьютерных систем и информационной безопасности");
-              
-                InstituteComboBox.Items.Add("Институт нефти , газа и энергетики");
-                InstituteComboBox.Items.Add("Институт пищевой и перерабатывающей промышленности");
-                InstituteComboBox.Items.Add("Институт экономики , управления и бизнеса");
-                InstituteComboBox.Items.Add("Институт строительства и транспортной инфраструктуры");
-                //InstituteComboBox.Items.Add("Институт механики , робототехники");
-            }
-            numberInst = false;
-
-
-
-        }
-
-        private void CourseComboBox_SelectedIndexChanged(object sender, EventArgs e)
-        {
-
-
-            if (numberCourse)
-            {
-                CourseComboBox.Items.Add("1");
-                CourseComboBox.Items.Add("2");
-                CourseComboBox.Items.Add("3");
-                CourseComboBox.Items.Add("4");
-            }
-            GroupComboBox.Items.Clear();
-
-            if (InstituteComboBox.Text == "Институт компьютерных систем и информационной безопасности") AddComboInstKB();
-            if (InstituteComboBox.Text == "Институт нефти , газа и энергетики" ) AddComboInstNeft();
-
-            if (InstituteComboBox.Text == "Институт пищевой и перерабатывающей промышленности") AddComboInstPisha();
-            if (InstituteComboBox.Text == "Институт экономики , управления и бизнеса") AddComboInstBiznes();
-
-           // if (InstituteComboBox.Text == "Институт механики , робототехники") AddComboInstRobot();
-
-
-            numberCourse = false;
-        }
-
-        private void AddComboInstKB()
-        {
-            if ( CourseComboBox.Text == "1")
-            {
-
-                GroupComboBox.Items.Add("22-КБ-ПР1");
-                GroupComboBox.Items.Add("22-КБ-ПР2");
-                GroupComboBox.Items.Add("22-КМ-ИВ2");
-                GroupComboBox.Items.Add("22-КМ-ПР1");
-
-
-            }
-            if ( CourseComboBox.Text == "2")
-            {
-                GroupComboBox.Items.Add("21-КБ-ПР1");
-                GroupComboBox.Items.Add("21-КБ-ПР2");
-                GroupComboBox.Items.Add("21-КБ-ПР3");
-                GroupComboBox.Items.Add("21-КБ-ИБ1");
-               
-                
-
-
-            }
-
-            if (CourseComboBox.Text == "3")
-            {
-                GroupComboBox.Items.Add("20-КБ-ПР1");
-                GroupComboBox.Items.Add("20-КБ-ПР2");
-
-                GroupComboBox.Items.Add("20-КБ-ИБ1");
-
-                GroupComboBox.Items.Add("20-КБ-ПИ1");
-
-                GroupComboBox.Items.Add("20-КБ-УС1");
-
-                GroupComboBox.Items.Add("20-КМ-ПИ1");
-                GroupComboBox.Items.Add("20-КМ-ИВ2");
-                GroupComboBox.Items.Add("20-КМ-ПР1");
-
-
-            }
-            if (CourseComboBox.Text == "4")
-            {
-                GroupComboBox.Items.Add("19-КБ-ПР1");
-
-                GroupComboBox.Items.Add("19-КБ-ИБ1");
-
-                GroupComboBox.Items.Add("19-КБ-ПИ1");
-
-                GroupComboBox.Items.Add("19-КБ-УС1");
-
-                GroupComboBox.Items.Add("19-КМ-ПР1");
-
-
-            }
-        }
-        private void AddComboInstNeft()
-        {
-            if ( CourseComboBox.Text == "1")
-            {
-
-                GroupComboBox.Items.Add("22-АО-Г1");
-                GroupComboBox.Items.Add("22-АО-Г2");
-                GroupComboBox.Items.Add("22-АО-Г3");
-                GroupComboBox.Items.Add("22-АО-Г4");
-                GroupComboBox.Items.Add("22-АО-МС1");
-                GroupComboBox.Items.Add("22-АО-МС2");
-                GroupComboBox.Items.Add("22-АО-МС3");
-                GroupComboBox.Items.Add("22-АО-ЭТД1");
-                GroupComboBox.Items.Add("22-АО-ЭТД2");
-                GroupComboBox.Items.Add("22-АО-ЭТД3");
-                GroupComboBox.Items.Add("22-НБ-НД1");
-                GroupComboBox.Items.Add("22-НБ-НД2");
-                GroupComboBox.Items.Add("22-НБ-ТМ1");
-                GroupComboBox.Items.Add("22-НБ-ТМ2");
-                GroupComboBox.Items.Add("22-НБ-ТМ3");
-                GroupComboBox.Items.Add("22-НБ-ХТ1");
-                GroupComboBox.Items.Add("22-НБ-ХТ2");
-                GroupComboBox.Items.Add("22-НБ-ХТ3");
-                GroupComboBox.Items.Add("22-НБ-ХТ4");
-
-
-
-            }
-            if (CourseComboBox.Text == "2")
-            {
-
-                GroupComboBox.Items.Add("21-АО-Г1");
-                GroupComboBox.Items.Add("21-АО-Г2");
-                GroupComboBox.Items.Add("21-АО-Г3");
-             
-                GroupComboBox.Items.Add("21-АО-МС1");
-                GroupComboBox.Items.Add("21-АО-МС2");
-            
-                GroupComboBox.Items.Add("21-АО-ЭТД1");
-                GroupComboBox.Items.Add("21-АО-ЭТД2");
-              
-                GroupComboBox.Items.Add("21-НБ-НД1");
-             
-                GroupComboBox.Items.Add("21-НБ-ТМ1");
-                GroupComboBox.Items.Add("21-НБ-ТМ2");
-         
-                GroupComboBox.Items.Add("21-НБ-ХТ1");
-                GroupComboBox.Items.Add("21-НБ-ХТ2");
-                GroupComboBox.Items.Add("21-НБ-ХТ3");
-            
-
-
-            }
-
-            if (CourseComboBox.Text == "3")
-            {
-                GroupComboBox.Items.Add("20-АО-Г1");
-                GroupComboBox.Items.Add("20-АО-Г2");
-            
-
-                GroupComboBox.Items.Add("20-АО-МС1");
-              
-
-                GroupComboBox.Items.Add("20-АО-ЭТД1");
-                GroupComboBox.Items.Add("20-АО-ЭТД2");
-
-                GroupComboBox.Items.Add("20-НБ-НД1");
-
-                GroupComboBox.Items.Add("20-НБ-ТМ1");
-            
-
-                GroupComboBox.Items.Add("20-НБ-ХТ1");
-                GroupComboBox.Items.Add("20-НБ-ХТ2");
-                GroupComboBox.Items.Add("20-НБ-ХТ3");
-
-            }
-            if (CourseComboBox.Text == "4")
-            {
-                GroupComboBox.Items.Add("19-АО-Г1");
-              
-
-
-                GroupComboBox.Items.Add("19-АО-МС1");
-
-
-                GroupComboBox.Items.Add("19-АО-ЭТД1");
-            
-                GroupComboBox.Items.Add("19-НБ-НД1");
-
-                GroupComboBox.Items.Add("19-НБ-ТМ1");
-
-
-                GroupComboBox.Items.Add("19-НБ-ХТ1");
-             
-
-            }
-        }
-
-        private void AddComboInstPisha()
-        {
-            if (CourseComboBox.Text == "1")
-            {
-
-                GroupComboBox.Items.Add("22-АО-НОЗ1");
-                GroupComboBox.Items.Add("22-АО-НОЗ2");
-                GroupComboBox.Items.Add("22-АО-НОЗ3");
-                GroupComboBox.Items.Add("22-АО-ПЭ1");
-                GroupComboBox.Items.Add("22-АО-ПЭ2");
-                GroupComboBox.Items.Add("22-АО-ПЭ3");
-                GroupComboBox.Items.Add("22-АО-ПЭ4");
-                GroupComboBox.Items.Add("22-АО-ПЭ5");
-                GroupComboBox.Items.Add("22-ПБ-ГД1");
-                GroupComboBox.Items.Add("22-ПБ-ГД2"); 
-                GroupComboBox.Items.Add("22-ПБ-ГД3");
-                GroupComboBox.Items.Add("22-ПБ-ПЖ1");
-                GroupComboBox.Items.Add("22-ПБ-ПЖ2");
-                GroupComboBox.Items.Add("22-ПБ-ПЖ3");
-                GroupComboBox.Items.Add("22-ПБ-ПР1");
-                GroupComboBox.Items.Add("22-ПБ-ПР2");
-                GroupComboBox.Items.Add("22-ПБ-ПР3");
-                GroupComboBox.Items.Add("22-ПБ-ПР4");
-                GroupComboBox.Items.Add("22-ПБ-СМ1");
-                GroupComboBox.Items.Add("22-ПБ-СМ2");
-                GroupComboBox.Items.Add("22-ПБ-СМ3");
-
-
-
-
-            }
-            if (CourseComboBox.Text == "2")
-            {
-
-                GroupComboBox.Items.Add("21-АО-НОЗ1");
-                GroupComboBox.Items.Add("21-АО-НОЗ2");
-                GroupComboBox.Items.Add("21-АО-ПЭ1");
-                GroupComboBox.Items.Add("21-АО-ПЭ2");
-                GroupComboBox.Items.Add("21-АО-ПЭ3");
-                GroupComboBox.Items.Add("21-ПБ-ГД1");
-                GroupComboBox.Items.Add("21-ПБ-ГД2");
-                GroupComboBox.Items.Add("21-ПБ-ПЖ1");
-                GroupComboBox.Items.Add("21-ПБ-ПЖ2");
-                GroupComboBox.Items.Add("21-ПБ-ПР1");
-                GroupComboBox.Items.Add("21-ПБ-ПР2");
-                GroupComboBox.Items.Add("21-ПБ-СМ1");
-                GroupComboBox.Items.Add("21-ПБ-СМ2");
-              
-
-
-            }
-
-            if (CourseComboBox.Text == "3")
-            {
-
-                GroupComboBox.Items.Add("20-АО-НОЗ1");
-                GroupComboBox.Items.Add("20-АО-ПЭ1");
-                GroupComboBox.Items.Add("20-АО-ПЭ2");
-                GroupComboBox.Items.Add("20-ПБ-ГД1");
-                GroupComboBox.Items.Add("20-ПБ-ГД2");
-                GroupComboBox.Items.Add("20-ПБ-ПЖ1");
-                GroupComboBox.Items.Add("20-ПБ-ПР1");
-                GroupComboBox.Items.Add("20-ПБ-ПР2");
-                GroupComboBox.Items.Add("20-ПБ-СМ1");
-
-
-            }
-            if (CourseComboBox.Text == "4")
-            {
-                GroupComboBox.Items.Add("19-АО-НОЗ1");
-                GroupComboBox.Items.Add("19-АО-ПЭ1");
-                GroupComboBox.Items.Add("19-АО-ПЭ2");
-                GroupComboBox.Items.Add("19-ПБ-ГД1");
-                GroupComboBox.Items.Add("19-ПБ-ГД2");
-                GroupComboBox.Items.Add("19-ПБ-ПЖ1");
-                GroupComboBox.Items.Add("19-ПБ-ПР1");
-                GroupComboBox.Items.Add("19-ПБ-ПР2");
-              
-
-
-            }
-        }
-        private void AddComboInstBiznes()
-        {
-            if (CourseComboBox.Text == "1")
-            {
-
-                GroupComboBox.Items.Add("22-АО-Г1");
-                GroupComboBox.Items.Add("22-АО-Г2");
-                GroupComboBox.Items.Add("22-АО-Г3");
-                GroupComboBox.Items.Add("22-АО-Г4");
-                GroupComboBox.Items.Add("22-ЭБ-ГУ1");
-                GroupComboBox.Items.Add("22-ЭБ-ГУ2");
-                GroupComboBox.Items.Add("22-ЭБ-ГУ3");
-                GroupComboBox.Items.Add("22-ЭБ-ГУ4");
-                GroupComboBox.Items.Add("22-ЭБ-МН1");
-                GroupComboBox.Items.Add("22-ЭБ-МН2");
-                GroupComboBox.Items.Add("22-ЭБ-МН3");
-                GroupComboBox.Items.Add("22-ЭБ-МН4");
-                GroupComboBox.Items.Add("22-ЭМ-ЭК1");
-                GroupComboBox.Items.Add("22-ЭМ-ЭК2");
-                GroupComboBox.Items.Add("22-ЭМ-ЭК3");
-                GroupComboBox.Items.Add("22-ЭМ-ЭК4");
-
-
-
-
-            }
-            if (CourseComboBox.Text == "2")
-            {
-
-
-                GroupComboBox.Items.Add("21-АО-Г1");
-                GroupComboBox.Items.Add("21-АО-Г2");
-                GroupComboBox.Items.Add("21-АО-Г3");
-                GroupComboBox.Items.Add("21-ЭБ-ГУ1");
-                GroupComboBox.Items.Add("21-ЭБ-ГУ2");
-                GroupComboBox.Items.Add("21-ЭБ-ГУ3");
-                GroupComboBox.Items.Add("21-ЭБ-МН1");
-                GroupComboBox.Items.Add("21-ЭБ-МН2");
-                GroupComboBox.Items.Add("21-ЭБ-МН3");
-                GroupComboBox.Items.Add("21-ЭБ-МН4");
-                GroupComboBox.Items.Add("21-ЭМ-ЭК1");
-                GroupComboBox.Items.Add("21-ЭМ-ЭК2");
-              
-
-
-
-            }
-
-            if (CourseComboBox.Text == "3")
-            {
-
-                GroupComboBox.Items.Add("20-АО-Г1");
-                GroupComboBox.Items.Add("20-АО-Г2");
-                GroupComboBox.Items.Add("20-ЭБ-ГУ1");
-                GroupComboBox.Items.Add("20-ЭБ-ГУ2");
-                GroupComboBox.Items.Add("20-ЭБ-МН1");
-                GroupComboBox.Items.Add("20-ЭБ-МН2");
-                GroupComboBox.Items.Add("20-ЭБ-МН4");
-                GroupComboBox.Items.Add("20-ЭМ-ЭК1");
-
-
-            }
-            if (CourseComboBox.Text == "4")
-            {
-                GroupComboBox.Items.Add("19-АО-Г1");
-                GroupComboBox.Items.Add("19-АО-Г2");
-                GroupComboBox.Items.Add("19-ЭБ-ГУ1");
-                GroupComboBox.Items.Add("19-ЭБ-ГУ2");
-                GroupComboBox.Items.Add("19-ЭБ-МН1");
-                GroupComboBox.Items.Add("19-ЭБ-МН2");
-                GroupComboBox.Items.Add("19-ЭБ-МН4");
-                GroupComboBox.Items.Add("19-ЭМ-ЭК1");
-
-
-            }
-        }
-        private void AddComboInstRobot()
-        {
-            if (CourseComboBox.Text == "1")
-            {
-
-                GroupComboBox.Items.Add("22-АО-Г1");
-                GroupComboBox.Items.Add("22-АО-Г2");
-                GroupComboBox.Items.Add("22-АО-Г3");
-                GroupComboBox.Items.Add("22-АО-Г4");
-                GroupComboBox.Items.Add("22-АО-МС1");
-                GroupComboBox.Items.Add("22-АО-МС2");
-                GroupComboBox.Items.Add("22-АО-МС3");
-                GroupComboBox.Items.Add("22-ММ-ЭТД1");
-                GroupComboBox.Items.Add("22-ММ-ЭТД2");
-                GroupComboBox.Items.Add("22-ММ-ЭТД3");
-                GroupComboBox.Items.Add("22-НБ-НД1");
-                GroupComboBox.Items.Add("22-НБ-НД2");
-                GroupComboBox.Items.Add("22-М-ТМ1");
-                GroupComboBox.Items.Add("22-М-ТМ2");
-                GroupComboBox.Items.Add("22-М-ТМ3");
-                GroupComboBox.Items.Add("22-М-ХТ1");
-                GroupComboBox.Items.Add("22-М-ХТ2");
-                GroupComboBox.Items.Add("22-М-ХТ3");
-                GroupComboBox.Items.Add("22-М-ХТ4");
-
-
-
-            }
-            if (CourseComboBox.Text == "2")
-            {
-
-                GroupComboBox.Items.Add("21-АО-Г1");
-                GroupComboBox.Items.Add("21-АО-Г2");
-                GroupComboBox.Items.Add("21-АО-Г3");
-                GroupComboBox.Items.Add("21-АО-МС1");
-                GroupComboBox.Items.Add("21-АО-МС2");
-                GroupComboBox.Items.Add("21-ММ-ЭТД1");
-                GroupComboBox.Items.Add("21-ММ-ЭТД2");
-                GroupComboBox.Items.Add("21-НБ-НД1");
-                GroupComboBox.Items.Add("21-НБ-НД2");
-                GroupComboBox.Items.Add("21-М-ТМ1");
-                GroupComboBox.Items.Add("21-М-ТМ2");
-                GroupComboBox.Items.Add("21-М-ХТ1");
-                GroupComboBox.Items.Add("21-М-ХТ2");
- 
-
-
-
-            }
-
-            if (CourseComboBox.Text == "3")
-            {
-
-                GroupComboBox.Items.Add("20-АО-Г1");
-                GroupComboBox.Items.Add("20-АО-Г2");
-                GroupComboBox.Items.Add("20-АО-Г3");
-                GroupComboBox.Items.Add("20-ММ-ЭТД1");
-                GroupComboBox.Items.Add("20-ММ-ЭТД2");
-                GroupComboBox.Items.Add("20-НБ-НД1");
-                GroupComboBox.Items.Add("20-М-ТМ1");
-                GroupComboBox.Items.Add("20-М-ТМ2");
-
-
-
-            }
-            if (CourseComboBox.Text == "4")
-            {
-                GroupComboBox.Items.Add("19-АО-Г1");
-                GroupComboBox.Items.Add("19-АО-Г2");
-                GroupComboBox.Items.Add("19-ММ-ЭТД1");
-                GroupComboBox.Items.Add("19-НБ-НД1");
-                GroupComboBox.Items.Add("19-М-ТМ1");
-                GroupComboBox.Items.Add("19-М-ТМ2");
-
-
-            }
-        }
+        
         private void GroupComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
            
@@ -614,6 +159,71 @@ namespace TRPO5
 
             //RegisterForm registerForm = new RegisterForm();
             //registerForm.Show();
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+            this.Hide();
+            //Form1 form1 = new Form1();
+            //form1.Show();
+
+            MainForm main = new MainForm();
+            main.Show();
+
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string discipline = comboBox1.Text;
+
+       
+
+            int count = 0;
+            //   MessageBox.Show (dataGridView1.RowCount.ToString());
+
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+
+
+                
+               // MessageBox.Show(dataGridView1[2, i].Value.ToString());
+                if (dataGridView1[3, i].Value.ToString() != discipline ) dataGridView1.Rows.RemoveAt(i);
+
+
+            }
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+
+
+
+                //MessageBox.Show(dataGridView1[2, i].Value.ToString());
+                if (dataGridView1[3, i].Value.ToString() != discipline) dataGridView1.Rows.RemoveAt(i);
+
+
+            }
+            for (int i = 0; i < dataGridView1.RowCount - 1; i++)
+            {
+
+
+
+                //MessageBox.Show(dataGridView1[2, i].Value.ToString());
+                if (dataGridView1[3, i].Value.ToString() != discipline) dataGridView1.Rows.RemoveAt(i);
+
+
+            }
+
+
+
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
