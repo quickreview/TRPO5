@@ -18,6 +18,9 @@ namespace TRPO5
         {
             InitializeComponent();
 
+            // Коментарий примера для gIT
+
+
 
             //// строка подключения к БД
             //string connStr = "server=localhost;port=3306;username=root;password=root;database=учетдисциплин";
